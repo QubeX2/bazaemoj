@@ -20,7 +20,7 @@ LFLAGS =
 LIBS = -lm
 
 # source files
-SRCS = bazaemoj.c strb.c
+SRCS = bazaemoj.c strb.c utf8.c
 
 # obj files
 OBJS = $(SRCS:.c=.o)

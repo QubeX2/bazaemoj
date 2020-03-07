@@ -22,6 +22,11 @@ void strb_init(struct strb *sb, size_t alloc);
 void strb_grow(struct strb *sb, size_t amount);
 
 /**
+ * copy
+ */
+void strb_copy(struct strb *dst, struct strb *src);
+
+/**
  * free buffer
  */
 void strb_free(struct strb *sb);
@@ -29,7 +34,18 @@ void strb_free(struct strb *sb);
 /**
  * set char*
  */
-void strb_set(struct strb *sb, char *data);
+#define strb_set(sb, data, dlen)    strb_insert(sb, 0, data, dlen)
+void strb_insert(struct strb *sb, size_t pos, const void *data, size_t dlen);
+
+/**
+ * substr(sb, start, length)
+ */
+void strb_substr(struct strb *sb, size_t start, size_t length);
+
+/**
+ * 
+ */
+void strb_fill(struct strb *sb, size_t start, size_t length, int c);
 
 /**
  * debug print buffer
@@ -42,5 +58,20 @@ void strb_dump(struct strb *sb);
 void strb_rtrim(struct strb *sb);
 void strb_ltrim(struct strb *sb);
 void strb_trim(struct strb *sb);
+
+/**
+ * tolower
+ */
+void strb_tolower(struct strb *sb);
+
+/**
+ * length
+ */
+unsigned int strb_len(struct strb *sb);
+
+/**
+ * concat
+ */
+void strb_concat(struct strb *sb, const void *data, size_t dlen);
 
 #endif
