@@ -23,6 +23,10 @@ int main(int argc, char **argv)
 
     strb_copy(&c, &b);
     strb_dump(&c);
+    strb_repeat(&c, 'x', 10);
+    strb_dump(&c);
+    strb_setlen(&c, 10);
+    strb_dump(&c);
 
 
     return 0;

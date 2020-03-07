@@ -152,3 +152,11 @@ void strb_concat(struct strb *sb, const void *data, size_t dlen)
     sb->len += dlen;
     sb->buf[sb->len + dlen] = '\0';
 }
+
+void strb_setlen(struct strb *sb, size_t len)
+{
+    if(len <= sb->len) {
+        sb->buf[len] = '\0';
+        sb->len = len;
+    }
+}

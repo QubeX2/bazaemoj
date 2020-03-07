@@ -43,9 +43,15 @@ void strb_insert(struct strb *sb, size_t pos, const void *data, size_t dlen);
 void strb_substr(struct strb *sb, size_t start, size_t length);
 
 /**
- * 
+ * repeat and fill
  */
+#define strb_repeat(sb, c, len)     strb_fill(sb, 0, len, c);
 void strb_fill(struct strb *sb, size_t start, size_t length, int c);
+
+/**
+ * set length of buffer
+ */
+void strb_setlen(struct strb *sb, size_t len);
 
 /**
  * debug print buffer
@@ -60,12 +66,12 @@ void strb_ltrim(struct strb *sb);
 void strb_trim(struct strb *sb);
 
 /**
- * tolower
+ * tolower + utf8_tolower
  */
 void strb_tolower(struct strb *sb);
 
 /**
- * length
+ * length (considers utf8)
  */
 unsigned int strb_len(struct strb *sb);
 
