@@ -2,7 +2,7 @@
 #
 
 # extra
-RM = rm
+RM = rm -f
 
 # compiler
 CC = gcc
@@ -20,7 +20,7 @@ LFLAGS =
 LIBS = -lm
 
 # source files
-SRCS  = bazaemoj.c
+SRCS = bazaemoj.c strb.c
 
 # obj files
 OBJS = $(SRCS:.c=.o)
