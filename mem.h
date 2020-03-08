@@ -50,8 +50,10 @@ do \
 while(0)
 
 /**
- * 
+ * copies and increments either destination or source
+ * hence _idcopy and _iscopy
  */
-void mem_icopy(void **data, void *buf, size_t size);
+void mem_idcopy(void **data, void *buf, size_t size);
+void mem_iscopy(void *data, void **buf, size_t size);
 
 #endif

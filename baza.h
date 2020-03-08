@@ -12,7 +12,7 @@ size_t baza_next_id();
  * file handlin
  */
 void baza_write_obj(char *file, void *data, size_t size);
-void *baza_read_obj(char *file, size_t *out_size);
+void *baza_read_obj(char *file, size_t pos, size_t *out_size);
 
 /**
  * size_t: object
@@ -24,7 +24,8 @@ void *baza_read_obj(char *file, size_t *out_size);
  * size_t: strlen(et->desc) + 1
  * et->desc + 1
  */
-void *baza_rec_emoj_tag(struct emoj_tag *et, size_t *size);
+void *baza_et_data(struct emoj_tag *et, size_t *size);
+struct emoj_tag *baza_et_make(void *data);
 
 /**
  * 

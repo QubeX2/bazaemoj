@@ -36,7 +36,9 @@ void shell_get_console(char *line)
 void shell_cmd_lss()
 {
     size_t size;
-    baza_read_obj("./senses.emojt", &size);
+    void *data = baza_read_obj("./senses.emojt", 0, &size);
+    struct emoj_tag *et = baza_et_make(data);
+    emoj_tag_dump(et);
 }
 
 void shell_cmd_adds()
@@ -62,7 +64,7 @@ void shell_cmd_adds()
     emoj_tag_init(&tag, TAG_TYPE_SENSE, name, desc, sign);
 
     size_t sz;
-    void *data = baza_rec_emoj_tag(&tag, &sz);
+    void *data = baza_et_data(&tag, &sz);
     baza_write_obj("./senses.emojt", data, sz);
     FREE(data);
 }
