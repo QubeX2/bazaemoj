@@ -5,12 +5,10 @@
 #include "utf8.h"
 #include "memory.h"
 
-char strb_slopbuf[1] = { '\0' };
-
 void strb_init(struct strb *sb, size_t alloc)
 {
     sb->alloc = sb->len = 0;
-    sb->buf = strb_slopbuf;
+    sb->buf = "";
     if(alloc)
         strb_grow(sb, alloc);
 }
@@ -94,16 +92,16 @@ void strb_fill(struct strb *sb, size_t start, size_t length, int c)
 
 void strb_dump(struct strb *sb)
 {
-    printf("sb->alloc = %zu\nsb->len = %zu\nsb->buf = {", sb->alloc, sb->len);
+    printf("{\n\tsb->alloc = %zu\n\tsb->len = %zu\n\tsb->buf = {", sb->alloc, sb->len);
     for(int i = 0; i < sb->len; i++) {
         putchar(sb->buf[i]);
     }
     printf("}\n");
-    printf("<Buffer ");
+    printf("\t<Buffer ");
     for(int i =0; i < sb->len; i++) {
         printf("%02x ", (unsigned char)sb->buf[i]);        
     }
-    printf(">\n\n");
+    printf(">\n}\n");
 }
 
 void strb_trim(struct strb *sb)

@@ -2,21 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "strb.h"
-
+#include "emoj.h"
 
 int main(int argc, char **argv)
 {
-    struct strb b;
+    struct emoj em;
 
-    char *name = "ABBÖ";
-    char *name2 = "M";
-
-    strb_init(&b, 0); 
-    strb_set(&b, name, strlen(name));
-    strb_insert(&b, 4, name2, strlen(name2));
-    strb_dump(&b);
-    strb_substr(&b, 0, 4);
-    strb_dump(&b);
+    emoj_init(&em);
+    emoj_dump(&em);
 
     return 0;
 }

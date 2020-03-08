@@ -1,7 +1,7 @@
 #ifndef UTF8_H_I
 #define UTF8_H_I
 
-#define U_LEN_K 18
+#define UTF8_LEN_K 18
 
 /**
  * gets the width of an utf8 character in sizeof(char)
