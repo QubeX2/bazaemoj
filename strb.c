@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include "strb.h"
 #include "utf8.h"
-#include "memory.h"
+#include "mem.h"
 
 void strb_init(struct strb *sb, size_t alloc)
 {

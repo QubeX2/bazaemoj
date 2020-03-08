@@ -1,15 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include "strb.h"
-#include "emoj.h"
+#include "shell.h"
+#include "err.h"
 
 int main(int argc, char **argv)
 {
-    struct emoj em;
-
-    emoj_init(&em);
-    emoj_dump(&em);
-
+    if(argc == 2 && !strcmp(argv[1], "shell")) {
+        shell_run();
+    }
     return 0;
 }

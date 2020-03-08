@@ -4,7 +4,7 @@
 #include <time.h>
 #include "emoj.h"
 #include "strb.h"
-#include "memory.h"
+#include "mem.h"
 
 void emoj_init(struct emoj *em) 
 {
@@ -22,6 +22,13 @@ void emoj_init(struct emoj *em)
     strb_init(em->strb, 0);
 }
 
+void emoj_free(struct emoj *em)
+{
+    strb_free(em->strb);
+    free(em->sense_list);
+    free(em->event_list);
+}
+
 void emoj_dump(struct emoj *em)
 {
     printf("em->id = %d\n", em->id);
@@ -29,4 +36,24 @@ void emoj_dump(struct emoj *em)
     printf("em->datetime = %s\n", em->datetime);
     strb_dump(em->strb);
     putchar('\n');
+}
+
+void emoj_tag_init(struct emoj_tag *et, tag_type_t type, char *name, char *desc, int sign)
+{
+    MALLOC(et->name, strlen(name) + 1);
+    strcpy(et->name, name);
+    MALLOC(et->desc, strlen(desc) + 1);
+    strcpy(et->desc, desc);
+    et->type = type;
+    et->sign = sign;
+}
+
+void emoj_tag_dump(struct emoj_tag *et)
+{
+    printf("et->id = %d\n", et->id);
+    printf("et->type = %d\n", et->type);
+    printf("et->name = %s\n", et->name);
+    printf("et->desc = %s\n", et->desc);
+    printf("et->sign = %d\n", et->sign);
+
 }

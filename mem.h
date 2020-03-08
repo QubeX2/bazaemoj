@@ -1,5 +1,10 @@
+#ifndef MEM_H_I
+#define MEM_H_I
+
 #include <stdlib.h>
 #include <stdio.h>
+
+
 
 #define ERROR_ALLOC_MESSAGE "Insufficient memory"
 
@@ -44,3 +49,9 @@ do \
 } \
 while(0)
 
+/**
+ * 
+ */
+void mem_icopy(void **data, void *buf, size_t size);
+
+#endif

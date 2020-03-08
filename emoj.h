@@ -3,9 +3,11 @@
 
 #include <time.h>
 
+typedef enum { TAG_TYPE_SENSE = 1, TAG_TYPE_EVENT = 2 } tag_type_t;
+
 struct emoj_tag {
     unsigned int id;
-    unsigned int type; // 1 = sens, 2 = event
+    tag_type_t type; // 1 = sens, 2 = event
     int sign;       // 1 or -1 : positive or negative
     char *name;
     char *desc;
@@ -42,6 +44,21 @@ void emoj_init(struct emoj *em);
 /**
  * 
  */
+void emoj_free(struct emoj *em);
+
+/**
+ * 
+ */
 void emoj_dump(struct emoj *em);
+
+/**
+ * 
+ */
+void emoj_tag_init(struct emoj_tag *et, tag_type_t type, char *name, char *desc, int sign);
+
+/**
+ * 
+ */
+void emoj_tag_dump(struct emoj_tag *et);
 
 #endif
