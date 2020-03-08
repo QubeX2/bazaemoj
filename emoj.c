@@ -57,3 +57,9 @@ void emoj_tag_dump(struct emoj_tag *et)
     printf("et->sign = %d\n", et->sign);
 
 }
+
+void emoj_tag_free(struct emoj_tag *et)
+{
+    FREE(et->name);
+    FREE(et->desc);
+}

@@ -28,6 +28,10 @@ void *baza_read_obj(char *file, size_t pos, size_t *out)
         printf("Error: can't open file %s\n", file);
         return NULL;
     }
+    fseek(fp, 0L, SEEK_END);
+    if(pos >= ftell(fp)) 
+        return NULL;
+
     fseek(fp, pos, SEEK_SET);
     fread(&size, sizeof(size_t), 1, fp);
     *out = size;

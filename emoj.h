@@ -61,4 +61,9 @@ void emoj_tag_init(struct emoj_tag *et, tag_type_t type, char *name, char *desc,
  */
 void emoj_tag_dump(struct emoj_tag *et);
 
+/**
+ * 
+ */
+void emoj_tag_free(struct emoj_tag *et);
+
 #endif

@@ -35,10 +35,17 @@ void shell_get_console(char *line)
 
 void shell_cmd_lss()
 {
-    size_t size;
-    void *data = baza_read_obj("./senses.emojt", 0, &size);
-    struct emoj_tag *et = baza_et_make(data);
-    emoj_tag_dump(et);
+    size_t size = 0;
+    size_t pos = 0;
+    struct emoj_tag *et;
+    void *data;
+    while( (data = baza_read_obj("./tags.emoj", pos, &size)) != NULL ) {
+        et = baza_et_make(data);
+        printf("ID: %d, TYPE: %s, NAME: %s\n", et->id, et->name, et->type == 1 ? "sense" : "event");
+        FREE(data);
+        FREE(et);
+        pos += size;
+    }
 }
 
 void shell_cmd_adds()
@@ -65,6 +72,6 @@ void shell_cmd_adds()
 
     size_t sz;
     void *data = baza_et_data(&tag, &sz);
-    baza_write_obj("./senses.emojt", data, sz);
+    baza_write_obj("./tags.emoj", data, sz);
     FREE(data);
 }
