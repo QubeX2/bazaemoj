@@ -17,7 +17,9 @@ void shell_run()
             break;
         } else if (!strcmp(cmd, "adds")) {
             shell_cmd_adds();
-        };
+        } else if (!strcmp(cmd, "lss")) {
+            shell_cmd_lss();
+        }
     }
     printf("Exiting shell.\n");
 }
@@ -29,6 +31,12 @@ void shell_get_console(char *line)
     while( (ch = getchar()) != '\n')
         line[i++] = ch;
     line[i] = '\0';
+}
+
+void shell_cmd_lss()
+{
+    size_t size;
+    baza_read_obj("./senses.emojt", &size);
 }
 
 void shell_cmd_adds()
@@ -55,6 +63,6 @@ void shell_cmd_adds()
 
     size_t sz;
     void *data = baza_rec_emoj_tag(&tag, &sz);
-    baza_write("./sense.emojt", data, sz);
+    baza_write_obj("./senses.emojt", data, sz);
     FREE(data);
 }

@@ -7,16 +7,34 @@
 #include "mem.h"
 #include "err.h"
 
-void baza_write(char *file, void *data, size_t size)
+void baza_write_obj(char *file, void *data, size_t size)
 {
     FILE *fp;
 
     if ( (fp = fopen(file, "ab")) == NULL ) {
-        err("Error: cant open file sense.emojt")
+        printf("Error: can't open file %s\n", file);
         return;
     }
     fwrite(data, size, 1, fp);
     fclose(fp);
+}
+
+void *baza_read_obj(char *file, size_t *out)
+{
+    FILE *fp;
+    size_t size;
+
+    if ( (fp = fopen(file, "rb")) == NULL ) {
+        printf("Error: can't open file %s\n", file);
+        return NULL;
+    }
+    fread(&size, sizeof(size_t), 1, fp);
+    fclose(fp);
+    printf("size: %ld\n", size);
+
+
+
+    return NULL;
 }
 
 void *baza_rec_emoj_tag(struct emoj_tag *et, size_t *out) 
