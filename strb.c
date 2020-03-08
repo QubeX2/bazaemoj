@@ -45,6 +45,8 @@ void strb_free(struct strb *sb)
 
 void strb_insert(struct strb *sb, size_t pos, const void *data, size_t dlen)
 {
+    utf8_align(sb->buf, &pos);
+
     if(sb->alloc < dlen + pos)
         strb_grow(sb, pos > sb->len ? (pos - sb->len) + dlen : dlen);
     
@@ -58,6 +60,8 @@ void strb_insert(struct strb *sb, size_t pos, const void *data, size_t dlen)
 
 void strb_substr(struct strb *sb, size_t start, size_t length)
 {
+    utf8_align(sb->buf, &start);
+    utf8_align_s(sb->buf, start, &length);
     if(start > sb->len)
         return;
 
@@ -71,6 +75,9 @@ void strb_substr(struct strb *sb, size_t start, size_t length)
 
 void strb_fill(struct strb *sb, size_t start, size_t length, int c)
 {
+    utf8_align(sb->buf, &start);
+    utf8_align_s(sb->buf, start, &length);
+
     if(start > sb->len)
         return;
 
@@ -87,7 +94,16 @@ void strb_fill(struct strb *sb, size_t start, size_t length, int c)
 
 void strb_dump(struct strb *sb)
 {
-    printf("strb->alloc = %zu\nstrb->len = %zu\nstrb->buf = \"%s\"\n\n", sb->alloc, sb->len, sb->buf);
+    printf("sb->alloc = %zu\nsb->len = %zu\nsb->buf = {", sb->alloc, sb->len);
+    for(int i = 0; i < sb->len; i++) {
+        putchar(sb->buf[i]);
+    }
+    printf("}\n");
+    printf("<Buffer ");
+    for(int i =0; i < sb->len; i++) {
+        printf("%02x ", (unsigned char)sb->buf[i]);        
+    }
+    printf(">\n\n");
 }
 
 void strb_trim(struct strb *sb)
@@ -124,6 +140,21 @@ void strb_tolower(struct strb *sb)
             *p = tolower(*p);
         } else {
             utf8_tolower(p, w);
+            p += w - 1;
+        }
+    }
+}
+
+void strb_toupper(struct strb *sb)
+{
+    int w;
+    char *p = sb->buf, *end = sb->buf + sb->len;
+    for(; p < end; p++) {
+        w = utf8_width(p);
+        if(!w) {
+            *p = toupper(*p);
+        } else {
+            utf8_toupper(p, w);
             p += w - 1;
         }
     }

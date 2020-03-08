@@ -1,5 +1,5 @@
-#ifndef STRB_H
-#define STRB_H
+#ifndef STRB_H_I
+#define STRB_H_I
 
 /**
  * String buffer, the `alloc` member tracks how much memory is allocated
@@ -69,6 +69,7 @@ void strb_trim(struct strb *sb);
  * tolower + utf8_tolower
  */
 void strb_tolower(struct strb *sb);
+void strb_toupper(struct strb *sb);
 
 /**
  * length (considers utf8)

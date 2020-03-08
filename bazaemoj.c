@@ -7,27 +7,16 @@
 int main(int argc, char **argv)
 {
     struct strb b;
-    struct strb c;
 
-    char *name = "ABBA";
-    char *name2 = "LILLA";
+    char *name = "ABBÖ";
+    char *name2 = "M";
 
     strb_init(&b, 0); 
     strb_set(&b, name, strlen(name));
-    strb_concat(&b, name2, strlen(name2));
+    strb_insert(&b, 4, name2, strlen(name2));
     strb_dump(&b);
-    strb_substr(&b, 2, 4);
+    strb_substr(&b, 0, 4);
     strb_dump(&b);
-    strb_fill(&b, 2, 14, '-');
-    strb_dump(&b);
-
-    strb_copy(&c, &b);
-    strb_dump(&c);
-    strb_repeat(&c, 'x', 10);
-    strb_dump(&c);
-    strb_setlen(&c, 10);
-    strb_dump(&c);
-
 
     return 0;
 }
