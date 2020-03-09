@@ -7,7 +7,43 @@
 #include "mem.h"
 #include "err.h"
 
-void baza_write_obj(char *file, void *data, size_t size)
+void baza_conf_write(struct baza_conf *bc)
+{
+    FILE *fp;
+
+    if( (fp = fopen("./conf.emoj", "wb")) == NULL ) {
+        printf("Error: can't open file conf.emoj\n");
+        return;
+    }
+    fwrite(bc, sizeof(struct baza_conf), 1, fp);
+    fclose(fp);
+}
+
+struct baza_conf *baza_conf_read()
+{
+    FILE *fp;
+    if( (fp = fopen("./conf.emoj", "rb")) == NULL ) {
+        return NULL;
+    }
+
+    struct baza_conf *bc = baza_conf_new();
+    fread(bc, sizeof(struct baza_conf), 1, fp);
+    fclose(fp);
+    return bc;
+}
+
+struct baza_conf *baza_conf_new()
+{
+    struct baza_conf *bc;
+    MALLOC(bc, sizeof(struct baza_conf));
+    bc->next_tag_id = 1;
+    bc->next_sense_id = 1;
+    bc->next_emoj_id = 1;
+    return bc;
+}
+
+
+void baza_obj_write(char *file, void *data, size_t size)
 {
     FILE *fp;
 
@@ -19,7 +55,7 @@ void baza_write_obj(char *file, void *data, size_t size)
     fclose(fp);
 }
 
-void *baza_read_obj(char *file, size_t pos, size_t *out)
+void *baza_obj_read(char *file, size_t pos, size_t *out)
 {
     FILE *fp;
     size_t size;
@@ -43,13 +79,11 @@ void *baza_read_obj(char *file, size_t pos, size_t *out)
     return data;
 }
 
-struct emoj_tag *baza_et_make(void *data)
+void baza_et_load(struct emoj_tag *et, void *data)
 {
     size_t size;
-    int nl, dl;
+    int nl;
     memcpy(&size, data, sizeof(size_t));
-    struct emoj_tag *et;
-    MALLOC(et, sizeof(struct emoj_tag));
     data += sizeof(size_t);
     mem_iscopy(&et->id, &data, sizeof(unsigned int));
     mem_iscopy(&et->type, &data, sizeof(tag_type_t));
@@ -57,22 +91,17 @@ struct emoj_tag *baza_et_make(void *data)
     mem_iscopy(&nl, &data, sizeof(size_t));
     MALLOC(et->name, nl);
     mem_iscopy(et->name, &data, nl);
-    mem_iscopy(&dl, &data, sizeof(size_t));
-    MALLOC(et->desc, dl);
-    mem_iscopy(et->desc, &data, dl);
-    return et;
 }
 
 void *baza_et_data(struct emoj_tag *et, size_t *out) 
 {
     void *data;
-    size_t size = (sizeof(size_t) * 3) + sizeof(unsigned int) + sizeof(tag_type_t) + sizeof(int) + strlen(et->name) + 1 + strlen(et->desc) + 1;
+    size_t size = (sizeof(size_t) * 3) + sizeof(unsigned int) + sizeof(tag_type_t) + sizeof(int) + strlen(et->name) + 1;
     MALLOC(data, size);
     void *pd = data;
     *out = size;
 
     size_t nl = strlen(et->name) + 1;
-    size_t dl = strlen(et->desc) + 1;
 
     mem_idcopy(&data, &size, sizeof(size_t));
     mem_idcopy(&data, &et->id, sizeof(unsigned int));
@@ -80,8 +109,6 @@ void *baza_et_data(struct emoj_tag *et, size_t *out)
     mem_idcopy(&data, &et->sign, sizeof(int));
     mem_idcopy(&data, &nl, sizeof(size_t));
     mem_idcopy(&data, et->name, nl);
-    mem_idcopy(&data, &dl, sizeof(size_t));
-    mem_idcopy(&data, et->desc, dl);
 
     return pd;
 }

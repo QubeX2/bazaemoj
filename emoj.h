@@ -10,20 +10,13 @@ struct emoj_tag {
     tag_type_t type; // 1 = sens, 2 = event
     int sign;       // 1 or -1 : positive or negative
     char *name;
-    char *desc;
 };
 
-struct emoj_sens {
-    struct emoj_tag *tag;
+struct emoj_sense {
+    unsigned int tid;
     unsigned int val; // 1 - 5
-    struct emoj_sens *first;
-    struct emoj_sens *next;
-};
-
-struct emoj_event {
-    struct emoj_tag *tag;
-    struct emoj_event *first;
-    struct emoj_event *next;
+    struct emoj_sense *first;
+    struct emoj_sense *next;
 };
 
 struct emoj {
@@ -31,9 +24,7 @@ struct emoj {
     time_t timestamp;
     char datetime[20];          // date YYYY-MM-DD HH:MM:SS
     char *desc;
-    struct strb *strb;
-    struct emoj_sens *sense_list;
-    struct emoj_event *event_list;
+    struct emoj_sense *list;
 };
 
 /**
@@ -54,12 +45,17 @@ void emoj_dump(struct emoj *em);
 /**
  * 
  */
-void emoj_tag_init(struct emoj_tag *et, tag_type_t type, char *name, char *desc, int sign);
+void emoj_tag_init(struct emoj_tag *et);
 
 /**
  * 
  */
 void emoj_tag_dump(struct emoj_tag *et);
+
+/**
+ * 
+ */
+struct emoj_tag *emoj_tag_new();
 
 /**
  * 

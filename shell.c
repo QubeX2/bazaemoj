@@ -15,10 +15,10 @@ void shell_run()
 
         if(!strcmp(cmd, "quit") || !strcmp(cmd, "exit") || !strcmp(cmd, "x") || !strcmp(cmd, "q")) {
             break;
-        } else if (!strcmp(cmd, "adds")) {
-            shell_cmd_adds();
-        } else if (!strcmp(cmd, "lss")) {
-            shell_cmd_lss();
+        } else if (!strcmp(cmd, "addt")) {
+            shell_cmd_addt();
+        } else if (!strcmp(cmd, "lst")) {
+            shell_cmd_lst();
         }
     }
     printf("Exiting shell.\n");
@@ -33,45 +33,49 @@ void shell_get_console(char *line)
     line[i] = '\0';
 }
 
-void shell_cmd_lss()
+void shell_cmd_lst()
 {
     size_t size = 0;
     size_t pos = 0;
-    struct emoj_tag *et;
     void *data;
-    while( (data = baza_read_obj("./tags.emoj", pos, &size)) != NULL ) {
-        et = baza_et_make(data);
-        printf("ID: %d, TYPE: %s, NAME: %s\n", et->id, et->name, et->type == 1 ? "sense" : "event");
+    struct emoj_tag *et = emoj_tag_new();
+    while( (data = baza_obj_read("./tags.emoj", pos, &size)) != NULL ) {
+        baza_et_load(et, data);
+        printf("ID: %d, NAME: %s, TYPE: %s, SIGN: %c\n", et->id, et->name, et->type == 1 ? "sense" : "event", et->sign == 0 ? ' ' : (et->sign == 1 ? '+' : '-'));
         FREE(data);
-        FREE(et);
         pos += size;
     }
+    FREE(et);
 }
 
-void shell_cmd_adds()
+void shell_cmd_addt()
 {
     char name[80];
-    char desc[80];
-    char signt[80];
-    int sign = 0;
-    printf("\nAdd Emotion\n");
+    char type[80];
+    char sign[80];
+    struct emoj_tag *et = emoj_tag_new();
+    emoj_tag_init(et);    
+    
+    printf("\nAdd Tag\n");
+    
     printf("Name:> ");
     shell_get_console(name);
-    printf("Description:> ");
-    shell_get_console(desc);
-    printf("Sign (+/-):> ");
-    shell_get_console(signt);
-    
-    if(strlen(signt) > 0 && signt[0] == '+')
-        sign = 1;
-    else if(strlen(signt) > 0 && signt[0] == '-')
-        sign = -1;
+    MALLOC(et->name, strlen(name) + 1);
+    strcpy(et->name, name);
 
-    struct emoj_tag tag;
-    emoj_tag_init(&tag, TAG_TYPE_SENSE, name, desc, sign);
+    printf("Type (s/e):> ");
+    shell_get_console(type);
+    et->type = strlen(type) == 0 ? 0 : (strlen(type) > 0 && type[0] == 'e' ? TAG_TYPE_EVENT : TAG_TYPE_SENSE);
+
+    printf("Sign (+/-):> ");
+    shell_get_console(sign);    
+    et->sign = strlen(sign) == 0 ? 0 : (strlen(sign) > 0 && sign[0] == '-' ? -1 : 1);
+
 
     size_t sz;
-    void *data = baza_et_data(&tag, &sz);
-    baza_write_obj("./tags.emoj", data, sz);
+    void *data = baza_et_data(et, &sz);
+    baza_obj_write("./tags.emoj", data, sz);
     FREE(data);
+    emoj_tag_free(et);
+    FREE(et);
 }

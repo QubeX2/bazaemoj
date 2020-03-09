@@ -2,6 +2,8 @@
 #include <string.h>
 #include "shell.h"
 #include "err.h"
+#include "baza.h"
+#include "mem.h"
 
 int main(int argc, char **argv)
 {
