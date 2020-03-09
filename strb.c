@@ -5,6 +5,13 @@
 #include "utf8.h"
 #include "mem.h"
 
+struct strb *strb_new()
+{
+    struct strb *sb;
+    MALLOC(sb, sizeof(struct strb));
+    return sb;
+}
+
 void strb_init(struct strb *sb, size_t alloc)
 {
     sb->alloc = sb->len = 0;

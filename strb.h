@@ -12,6 +12,11 @@ struct strb {
 };
 
 /**
+ * 
+ */
+struct strb *strb_new();
+
+/**
  * init and alloc memory for buf
  */
 void strb_init(struct strb *sb, size_t alloc);
