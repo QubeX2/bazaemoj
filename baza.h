@@ -10,10 +10,16 @@ struct baza_conf {
 };
 
 /**
- * file handling
+ * object read and write
  */
 void baza_obj_write(char *file, void *data, size_t size);
 void *baza_obj_read(char *file, size_t pos, size_t *out_size);
+
+/**
+ * 
+ */
+void baza_idx_write(char *file, void *data, size_t size);
+void *baza_idx_read(char *file);
 
 /**
  * size_t: object

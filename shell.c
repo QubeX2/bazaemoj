@@ -39,7 +39,7 @@ void shell_cmd_lst()
     size_t pos = 0;
     void *data;
     struct emoj_tag *et = emoj_tag_new();
-    while( (data = baza_obj_read("./tags.emoj", pos, &size)) != NULL ) {
+    while( (data = baza_obj_read("./tags.emjd", pos, &size)) != NULL ) {
         baza_et_load(et, data);
         printf("ID: %d, NAME: %s, TYPE: %s, SIGN: %c\n", et->id, et->name, et->type == 1 ? "sense" : "event", et->sign == 0 ? ' ' : (et->sign == 1 ? '+' : '-'));
         FREE(data);
@@ -74,7 +74,7 @@ void shell_cmd_addt()
 
     size_t sz;
     void *data = baza_et_data(et, &sz);
-    baza_obj_write("./tags.emoj", data, sz);
+    baza_obj_write("./tags.emjd", data, sz);
     FREE(data);
     emoj_tag_free(et);
     FREE(et);

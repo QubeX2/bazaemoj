@@ -11,7 +11,7 @@ void baza_conf_write(struct baza_conf *bc)
 {
     FILE *fp;
 
-    if( (fp = fopen("./conf.emoj", "wb")) == NULL ) {
+    if( (fp = fopen("./conf.emjd", "wb")) == NULL ) {
         printf("Error: can't open file conf.emoj\n");
         return;
     }
@@ -22,7 +22,7 @@ void baza_conf_write(struct baza_conf *bc)
 struct baza_conf *baza_conf_read()
 {
     FILE *fp;
-    if( (fp = fopen("./conf.emoj", "rb")) == NULL ) {
+    if( (fp = fopen("./conf.emjd", "rb")) == NULL ) {
         return NULL;
     }
 
